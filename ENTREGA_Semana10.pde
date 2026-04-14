@@ -96,6 +96,17 @@ void mousePressed() {
     actual = new Forma(mouseX,mouseY,forma,color(h,s,b));
     formas.add(actual);
   }
+  
+//Borrador  
+  if (!ui && herramienta == 1 && mouseY > 140) {
+  for (int i = formas.size()-1; i >= 0; i--) {
+    Forma f = formas.get(i);
+    if (dist(mouseX, mouseY, f.x, f.y) < f.t) {
+      formas.remove(i);
+      break;
+    }
+  }
+}
 }
 
 void mouseDragged() {
