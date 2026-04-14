@@ -75,12 +75,17 @@ void mousePressed() {
   if (mouseX>20&&mouseX<50&&mouseY>150&&mouseY<height-30) {dragH=true; h=map(mouseY,150,height-30,0,255); ui=true;}
   if (mouseX>60&&mouseX<90&&mouseY>150&&mouseY<height-30) {dragS=true; s=map(mouseY,150,height-30,0,255); ui=true;}
 
+// Primero recorre los 4 botones de herramientas de la interfaz (pintar, borrar, formas, limpiar)
   for (int i=0;i<4;i++) {
+
+//Verifica si el mouse esta en alguno de los botones de la interfaz
     if (dist(mouseX,mouseY,65+i*90,70)<40) {
       herramienta=i; 
+// Indica en donde se hizo clic
       ui=true;
-      //Si el boton es limpiar
+      //Si el boton es limpiar que es la posicion 3
       if( i == 3){
+//Borra todas las formas almacenadas en la lista es decir, limpiar el lienzo completo
         formas.clear();
       }
     }
