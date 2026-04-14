@@ -129,11 +129,34 @@ void mousePressed() {
 }
 
 void mouseDragged() {
-  if (dragH) h = constrain(map(mouseY, 150, height-30, 0, 255), 0, 255);
-  else if (dragS) s = constrain(map(mouseY, 150, height-30, 0, 255), 0, 255);
-  else if (actual!=null) actual.actualizar(mouseX, mouseY);
+  if (dragH) {
+    h = constrain(map(mouseY, 150, height-30, 0, 255), 0, 255);
+  } 
+  else if (dragS) {
+    s = constrain(map(mouseY, 150, height-30, 0, 255), 0, 255);
+  } 
+  else if (actual != null) {
+    actual.actualizar(mouseX, mouseY);
+  } 
   else if (herramienta == 0 && mouseY > 140) {
+    // LÁPIZ
     pinceladas.add(new Pincelada(mouseX, mouseY, color(h, s, b)));
+  } 
+  else if (herramienta == 1 && mouseY > 140) {
+    // BORRADOR
+    for (int i = pinceladas.size()-1; i >= 0; i--) {
+      Pincelada p = pinceladas.get(i);
+      if (dist(mouseX, mouseY, p.x, p.y) < 20) {
+        pinceladas.remove(i);
+      }
+    }
+
+    for (int i = formas.size()-1; i >= 0; i--) {
+      Forma f = formas.get(i);
+      if (dist(mouseX, mouseY, f.x, f.y) < f.t) {
+        formas.remove(i);
+      }
+    }
   }
 }
 
