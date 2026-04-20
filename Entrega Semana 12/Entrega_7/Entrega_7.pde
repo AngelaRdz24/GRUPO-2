@@ -77,17 +77,17 @@ void draw() {
   }
 }
 
-// Palomitas con borde exterior
+// 🍿 Dibuja palomita con borde exterior limpio
 void drawPopcorn(float px, float py, float s) {
   pushMatrix();
   translate(px, py);
   
-  // Contorno exterior
+  // 🔳 CONTORNO EXTERIOR
   fill(0);
   noStroke();
   drawPopcornShape(s * 1.08); // ligeramente más grande
   
-  // Palomitas sin bordes internos)
+  // 🍿 PALOMITA REAL (sin bordes internos)
   
   // Base amarilla
   fill(255, 204, 0);
@@ -103,7 +103,7 @@ void drawPopcorn(float px, float py, float s) {
   popMatrix();
 }
 
-// Forma base para generar el contorno
+// 🔲 Forma base para generar el contorno
 void drawPopcornShape(float s) {
   ellipse(0, s*0.2, s*0.6, s*0.5);
   ellipse(-s*0.2, -s*0.1, s*0.5, s*0.5);

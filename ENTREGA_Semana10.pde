@@ -1,25 +1,13 @@
-//iconos de herramientas
 PShape[] iconos = new PShape[4];
 String[] nombres = {"pintar.svg", "borrador.svg", "geom.svg", "limpiar.svg"};
 
-//control de herramientas y formas
 int herramienta = -1, forma = 0;
-
-//lista para almacenar formas geometricas dibujadas
 ArrayList<Forma> formas = new ArrayList<Forma>();
-
-//lista para almacenar pinceladas dibujadas
 ArrayList<Pincelada> pinceladas = new ArrayList<Pincelada>();
-
 Forma actual = null;
 
-//valores de color
 float h = 0, s = 255, b = 255;
-
-// Variables para controlar deslizadores de color
 boolean dragH = false, dragS = false;
-
-//indicar si se esta usando el pincel
 boolean pintando = false;
 
 void setup() {
@@ -31,13 +19,10 @@ void setup() {
 void draw() {
   background(255);
 
-//muestra formas geometricas
   for (Forma f : formas) f.mostrar();
 
-//muestra pinceladas
   for (Pincelada p : pinceladas) p.mostrar();
-  
-//barras para seleccionar el matiz (H) y la saturación (S)
+
   for (int y = 150; y < height-30; y++) {
     stroke(map(y, 150, height-30, 0, 255), 255, 255);
     line(20, y, 50, y);
@@ -51,7 +36,6 @@ void draw() {
   rect(20, map(h, 0, 255, 150, height-30)-3, 30, 6);
   rect(60, map(s, 0, 255, 150, height-30)-3, 30, 6);
 
-//muestra el color seleccionado 
   fill(h, s, b);
   ellipse(120, height/2, 40, 40);
 
@@ -59,7 +43,6 @@ void draw() {
   noStroke();
   rect(20, 20, width-40, 100, 20);
 
-//dibujar botones de herramientas
   for (int i = 0; i < 4; i++) {
     float x = 65 + i*90;
     float t = (dist(mouseX, mouseY, x, 70)<30 || herramienta==i)?80:60;
@@ -99,11 +82,11 @@ void draw() {
   }
 }
 
-//detectar clicks y seleccionar herramientas
+
 void mousePressed() {
   boolean ui = false;
 
-  //control de seleccion de color
+  // sliders
   if (mouseX>20&&mouseX<50&&mouseY>150&&mouseY<height-30) {
     dragH=true;
     h=map(mouseY, 150, height-30, 0, 255);
@@ -119,7 +102,7 @@ void mousePressed() {
     if (dist(mouseX, mouseY, 65+i*90, 70)<40) {
       herramienta=i;
       ui=true;
-      // LIMPIAR
+      //Si el boton es limpiar
       if ( i == 3) {
         formas.clear();
         pinceladas.clear();
@@ -136,19 +119,15 @@ void mousePressed() {
     }
   }
 
-//crear forma geometrica
   if (!ui && herramienta==2 && mouseY>140) {
     actual = new Forma(mouseX, mouseY, forma, color(h, s, b));
     formas.add(actual);
   }
-  
-  //activar el pincel
   if (!ui && herramienta == 0 && mouseY > 140) {
     pintando = true;
   }
 }
 
-//dibunar, borrar y ajustar color al arrastrar mouse
 void mouseDragged() {
   if (dragH) {
     h = constrain(map(mouseY, 150, height-30, 0, 255), 0, 255);
@@ -181,14 +160,12 @@ void mouseDragged() {
   }
 }
 
-//finalizar interaccion con mouse
 void mouseReleased() {
   dragH = dragS = false;
   actual = null;
   pintando = false;
 }
 
-//dibuar poligono
 void poligono(float x, float y, int lados, float r) {
   beginShape();
   for (int i=0; i<lados; i++) {
