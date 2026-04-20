@@ -12,7 +12,7 @@ PShape gear;
 int hoveredIndex = -1;
 
 void setup() {
-  size(2000, 2000);
+  size(900, 900);
   
   datos = loadTable("movies.csv", "header");
   nDatos = datos.getRowCount();
@@ -28,7 +28,6 @@ void setup() {
   gear = loadShape("gear.svg");
   
   int maxVotes = 0;
-  float maxRating = 0;
   
   // Leer datos
   for (int i = 0; i < nDatos; i++) {
@@ -37,17 +36,16 @@ void setup() {
     originalTitle[i] = datos.getString(i, "original_title");
     
     if (voteCount[i] > maxVotes) maxVotes = voteCount[i];
-    if (voteAverage[i] > maxRating) maxRating = voteAverage[i];
   }
   
   // Mapear posiciones y tamaños
   for (int i = 0; i < nDatos; i++) {
-    x[i] = map(i, 0, nDatos, 50, width - 50);
+    x[i] = map(i, 0, nDatos, 100, width - 50);
     
-    // Más rating = más arriba
-    y[i] = map(voteAverage[i], 0, maxRating, height - 50, 80);
+    // Escala fija de rating (0–10)
+    y[i] = map(voteAverage[i], 0, 10, height - 50, 80);
     
-    // Más votos = más grande (50 a 100 px)
+    // Más votos = más grande
     size[i] = map(voteCount[i], 0, maxVotes, 50, 100);
   }
 }
@@ -58,7 +56,33 @@ void draw() {
   
   hoveredIndex = -1;
   
-  // Dibujar engranajes
+  // EJE Y (RATING)
+
+  stroke(0);
+  line(60, 80, 60, height - 50);
+  
+  fill(0);
+  textAlign(RIGHT);
+  textSize(12);
+
+  int numTicks = 5;
+
+  for (int i = 0; i <= numTicks; i++) {
+    float value = map(i, 0, numTicks, 0, 10);
+    float yPos = map(value, 0, 10, height - 50, 80);
+    
+    line(55, yPos, 60, yPos);
+    text(nf(value, 1, 1), 50, yPos + 4);
+  }
+  
+  // Título eje
+  textAlign(CENTER);
+  textSize(14);
+  text("Rating", 60, 60);
+  
+
+  // ENGRANAJES
+
   for (int i = 0; i < nDatos; i++) {
     float d = dist(mouseX, mouseY, x[i], y[i]);
     float s = size[i];
@@ -76,7 +100,9 @@ void draw() {
     popMatrix();
   }
   
-  // Texto superior centrado
+
+  // INFO AL HACER HOVER
+
   if (hoveredIndex != -1) {
     fill(0);
     textAlign(CENTER);
